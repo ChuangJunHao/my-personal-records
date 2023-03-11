@@ -20,7 +20,7 @@ public class PrsnRecordDbUtil {
 	}
 	
 	private String selectAllQuery = "select * from record";
-	private String insertQuery = "insert into record(exercise_name, weights, sets, reps, volume) value(?, ?, ?, ?, ?)";
+	private String insertQuery = "insert into record(exercise_name, weights, sets, reps, volume, training_date) value(?, ?, ?, ?, ?, ?)";
 	
 	
 	// retrieve all data
@@ -44,9 +44,9 @@ public class PrsnRecordDbUtil {
 				int weights = rs.getInt("weights");
 				int sets = rs.getInt("sets");
 				int reps = rs.getInt("reps");
-//				Date date = rs.getTimestamp("date");
+				Date date = rs.getDate("training_date");
 				
-				PrsnRecord tempPrsnRecord = new PrsnRecord(exerciseName, weights, sets, reps);
+				PrsnRecord tempPrsnRecord = new PrsnRecord(exerciseName, weights, sets, reps, date);
 				allPrsnRecords.add(tempPrsnRecord);
 			}
 			

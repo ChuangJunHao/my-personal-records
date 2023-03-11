@@ -5,7 +5,7 @@
 <body>
 
 	<c:forEach var="tempRecord" items="${ALL_RECORDS}">
-		${tempRecord.exerciseName}, ${tempRecord.weights}, ${tempRecord.sets}, ${tempRecord.reps}, ${tempRecord.volume}
+		${tempRecord.exerciseName}, ${tempRecord.weights}, ${tempRecord.sets}, ${tempRecord.reps}, ${tempRecord.volume}, ${tempRecord.date}
 	</c:forEach> 
 
 </body>
