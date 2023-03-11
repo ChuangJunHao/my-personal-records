@@ -1,6 +1,9 @@
 package project.mypr.web.jdbc;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -45,10 +48,41 @@ public class PrsnRecordControllerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			listPrsnRecord(request, response);
+			String command = request.getParameter("command");
+			if(command == null) command = "LIST";
+			
+			switch(command) {
+				case "ADD": addRecord(request, response); break;
+				case "LIST": listPrsnRecord(request, response); break;
+				default: listPrsnRecord(request, response); break;
+			}
+			
+			
 		}catch (Exception e) {
 			throw new ServletException(e);
 		}
+		
+	}
+
+
+
+	private void addRecord(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		// get pieces of info from request
+		String exerciseName = request.getParameter("exerciseName");
+		int weights = Integer.valueOf(request.getParameter("weights"));
+		int sets = Integer.valueOf(request.getParameter("sets"));
+		int reps = Integer.valueOf(request.getParameter("reps"));
+		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("date"));
+				
+		// create new PrsnRec object using the info
+		PrsnRecord prsnRecord = new PrsnRecord(exerciseName, weights, sets, reps, date);
+		
+		// pass it to db
+		prsnRecDbUtil.savePrsnRecord(prsnRecord);
+		
+		// send back to list page
+		listPrsnRecord(request, response);
 		
 	}
 

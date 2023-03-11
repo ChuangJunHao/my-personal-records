@@ -9,14 +9,15 @@ CREATE TABLE record(
     weights INT DEFAULT NULL,
     sets INT DEFAULT NULL,
     reps INT DEFAULT NULL,
-    volume INT DEFAULT NULL
+    volume INT DEFAULT NULL,
+    training_date DATE
 );
 
-INSERT INTO record(exercise_name, weights, sets, reps, volume)
+INSERT INTO record(exercise_name, weights, sets, reps, volume, training_date)
 value
-	("squat", 120, 3, 8, 120*3*8),
-	("brench press", 80, 4, 9, 80*4*9),
-    ("deadlift", 140, 4, 8, 140*4*8);
+	("squat", 120, 3, 8, 120*3*8, "2023-02-25"),
+	("brench press", 80, 4, 9, 80*4*9, "2023-02-26"),
+    ("deadlift", 140, 4, 8, 140*4*8,  "2023-02-27");
 
 -- delete from record where id =1;
 select * from record;

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +21,7 @@ public class PrsnRecordDbUtil {
 		this.dataSource = dataSource;
 	}
 	
-	private String selectAllQuery = "select * from record";
+	private String selectAllQuery = "select * from record order by training_date desc";
 	private String insertQuery = "insert into record(exercise_name, weights, sets, reps, volume, training_date) value(?, ?, ?, ?, ?, ?)";
 	
 	
@@ -80,7 +82,8 @@ public class PrsnRecordDbUtil {
 		int sets = prsnRecord.getSets();
 		int reps = prsnRecord.getReps();
 		int volume = prsnRecord.getVolume();
-//		String date = prsnRecord.getDate().toString();
+		String strDate = new SimpleDateFormat("yyyy-MM-dd").format(prsnRecord.getDate());
+	
 		
 		// insert into db
 		try {
@@ -93,7 +96,7 @@ public class PrsnRecordDbUtil {
 			stmt.setInt(3, sets);
 			stmt.setInt(4, reps);
 			stmt.setInt(5, volume);
-//			stmt.setString(6, date);
+			stmt.setString(6, strDate);
 			
 			// execute query
 			stmt.execute();
