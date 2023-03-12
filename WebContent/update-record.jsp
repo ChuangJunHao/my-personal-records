@@ -1,7 +1,8 @@
 <html>
 
 <head>
-	<title>Add Student</title>
+	<title>UPDATE FORM</title>
+	<link type="text/css" rel="stylesheet" href="css/global-style.css">
 </head>
 
 <body>

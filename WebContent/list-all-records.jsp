@@ -3,6 +3,11 @@
 
 <html>
 
+<head>
+	<title>HOME</title>
+	<link type="text/css" rel="stylesheet" href="css/global-style.css">
+</head>
+
 <body>
 	<nav><a href="PrsnRecordControllerServlet">HOME</a></nav>
 	
