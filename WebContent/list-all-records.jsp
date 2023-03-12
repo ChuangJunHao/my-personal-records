@@ -1,11 +1,25 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html>
 
 <body>
+	<nav><a href="PrsnRecordControllerServlet">HOME</a></nav>
+	
 	<h1>My Personal Records</h1>
 	<h2>All Training Records</h2>
+	
+	<form action="PrsnRecordControllerServlet" method="GET">
+		<input type="hidden" name="command" value="SEARCH">
+		<input type="text" name="keyword" placeholder="search record by keyword">
+		<input type="submit" value="Search">
+	</form>
+	
+	<c:set var="length" value="${LENGTH}" />
+	<h3> Total: ${length} results</h3>
+	
 	<input type="button" value="Add Record" onclick="window.location.href='add-record.jsp'">
+	
 	<table border="1">
 		<tr>
 			<th>Exercise</th>
@@ -46,6 +60,7 @@
 	
 	
 	</table>
+
 	
 	
 	

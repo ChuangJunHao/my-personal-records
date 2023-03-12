@@ -57,6 +57,7 @@ public class PrsnRecordControllerServlet extends HttpServlet {
 				case "LOAD": loadPrsnRecord(request, response); break;
 				case "UPDATE": updatePrsnRecord(request, response); break;
 				case "DELETE": deletePrsnRecord(request, response); break;
+				case "SEARCH": searchPrsnRecord(request, response); break;
 				default: listPrsnRecord(request, response); break;
 			}
 			
@@ -65,6 +66,24 @@ public class PrsnRecordControllerServlet extends HttpServlet {
 			throw new ServletException(e);
 		}
 		
+	}
+
+	private void searchPrsnRecord(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		// read search query from from
+		String keyword = request.getParameter("keyword");
+		
+		// search result using db util and store it into new List
+		List<PrsnRecord> records = prsnRecDbUtil.getPrsnRecordsByKeyword(keyword); 
+		
+		// set attritubes
+		request.setAttribute("ALL_RECORDS", records);
+		int lengthOfList = records.size();
+		request.setAttribute("LENGTH", lengthOfList);
+		
+		// send it back to list page 
+		RequestDispatcher dispatcher = request.getRequestDispatcher("list-all-records.jsp");
+		dispatcher.forward(request, response);
 	}
 
 
@@ -91,10 +110,10 @@ public class PrsnRecordControllerServlet extends HttpServlet {
 		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("date"));
 	
 		// create a new PrsnRecord object
-		PrsnRecord prsnRecord = new PrsnRecord(id, exerciseName, weights, sets, reps, date);
+		PrsnRecord record = new PrsnRecord(id, exerciseName, weights, sets, reps, date);
 		
 		// update date through db util
-		prsnRecDbUtil.updatePrsnRecord(prsnRecord);
+		prsnRecDbUtil.updatePrsnRecord(record);
 		
 		// send it back to list page
 		listPrsnRecord(request, response);
@@ -149,6 +168,11 @@ public class PrsnRecordControllerServlet extends HttpServlet {
 	private void listPrsnRecord(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		List<PrsnRecord> records = prsnRecDbUtil.getAllPrsnRecords();
 		request.setAttribute("ALL_RECORDS", records);
+		
+		// send the length of the list
+		int lengthOfList = records.size();
+		request.setAttribute("LENGTH", lengthOfList);
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("list-all-records.jsp");
 		dispatcher.forward(request, response);
 	}

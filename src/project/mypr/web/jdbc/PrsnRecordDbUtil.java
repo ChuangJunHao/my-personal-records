@@ -26,6 +26,7 @@ public class PrsnRecordDbUtil {
 	private String insertQuery = "insert into record(exercise_name, weights, sets, reps, volume, training_date) value(?, ?, ?, ?, ?, ?) ";
 	private String updateQuery = "update record set exercise_name = ?, weights = ?, sets = ?, reps = ?, volume = ?, training_date = ? where id = ? ";
 	private String deleteQuery = "delete from record where id = ? ";
+	private String selectByKeywordQuery = "select * from record where exercise_name like ? or weights like ? or training_date like ?";
 	
 	
 	
@@ -67,8 +68,35 @@ public class PrsnRecordDbUtil {
 
 
 	// retrieve data by keyword
-	public List<PrsnRecord> getPrsnRecordsByKeyword(String keyword){
-		return null;
+	public List<PrsnRecord> getPrsnRecordsByKeyword(String keyword) throws Exception{
+		keyword = "%"+keyword+"%";
+		List<PrsnRecord> records = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conn = dataSource.getConnection();
+			stmt = conn.prepareStatement(selectByKeywordQuery);
+			stmt.setString(1, keyword);
+			stmt.setString(2, keyword);
+			stmt.setString(3, keyword);
+
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				int id = rs.getInt("id");
+				String exerciseName = rs.getString("exercise_name");
+				int weights = rs.getInt("weights");
+				int sets = rs.getInt("sets");
+				int reps = rs.getInt("reps");
+				Date date = rs.getDate("training_date");
+				PrsnRecord tempRecord = new PrsnRecord(id, exerciseName, weights, sets, reps, date);
+				records.add(tempRecord);
+			}
+			return records;
+			
+		}finally {
+			close(conn, stmt, rs);
+		}
 	}
 	
 	// retrieve data by id
