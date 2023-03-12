@@ -56,6 +56,7 @@ public class PrsnRecordControllerServlet extends HttpServlet {
 				case "LIST": listPrsnRecord(request, response); break;
 				case "LOAD": loadPrsnRecord(request, response); break;
 				case "UPDATE": updatePrsnRecord(request, response); break;
+				case "DELETE": deletePrsnRecord(request, response); break;
 				default: listPrsnRecord(request, response); break;
 			}
 			
@@ -63,6 +64,17 @@ public class PrsnRecordControllerServlet extends HttpServlet {
 		}catch (Exception e) {
 			throw new ServletException(e);
 		}
+		
+	}
+
+
+
+	private void deletePrsnRecord(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		int id = Integer.valueOf(request.getParameter("prsnRecordId"));
+		
+		prsnRecDbUtil.deletePrsnRecord(id);
+		
+		listPrsnRecord(request, response);
 		
 	}
 

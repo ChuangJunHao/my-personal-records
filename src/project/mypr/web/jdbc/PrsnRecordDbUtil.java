@@ -21,10 +21,11 @@ public class PrsnRecordDbUtil {
 		this.dataSource = dataSource;
 	}
 	
-	private String selectAllQuery = "select * from record order by training_date desc";
-	private String selectByIdQuery = "select * from record where id = ?";
-	private String insertQuery = "insert into record(exercise_name, weights, sets, reps, volume, training_date) value(?, ?, ?, ?, ?, ?)";
+	private String selectAllQuery = "select * from record order by training_date desc ";
+	private String selectByIdQuery = "select * from record where id = ? ";
+	private String insertQuery = "insert into record(exercise_name, weights, sets, reps, volume, training_date) value(?, ?, ?, ?, ?, ?) ";
 	private String updateQuery = "update record set exercise_name = ?, weights = ?, sets = ?, reps = ?, volume = ?, training_date = ? where id = ? ";
+	private String deleteQuery = "delete from record where id = ? ";
 	
 	
 	
@@ -160,7 +161,19 @@ public class PrsnRecordDbUtil {
 	}
 	
 	// delete data
-	public void deletePrsnRecord(int id) {
+	public void deletePrsnRecord(int id) throws Exception{
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		
+		try {
+			conn = dataSource.getConnection();
+			stmt = conn.prepareStatement(deleteQuery);
+			stmt.setInt(1, id);
+			stmt.execute();
+			
+		} finally {
+			close(conn, stmt, null);
+		}
 		
 	}
 	

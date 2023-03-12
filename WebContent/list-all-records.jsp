@@ -23,6 +23,10 @@
 				<c:param name="command" value="LOAD" />
 				<c:param name="prsnRecordId" value="${tempRecord.id}" />
 			</c:url>
+			<c:url var="deleteLink" value="PrsnRecordControllerServlet">
+				<c:param name="command" value="DELETE" />
+				<c:param name="prsnRecordId" value="${tempRecord.id}" />
+			</c:url>
 		
 			<tr>
 				<td>${tempRecord.exerciseName}</td>
@@ -31,7 +35,11 @@
 				<td>${tempRecord.reps}</td>
 				<td>${tempRecord.volume}</td>
 				<td>${tempRecord.date}</td>
-				<td><a href="${updateLink}">Update</a></td>
+				<td>
+					<a href="${updateLink}">Update</a>
+					 |
+					<a href="${deleteLink}" onclick="if(!confirm('Are you sure you want to delete this record?')) return false">Delete</a>
+				</td>
 			</tr>
 		</c:forEach> 
 
