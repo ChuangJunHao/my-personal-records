@@ -1,5 +1,5 @@
-# my-personal-records
-practive-on-jsp-servlet-jdbc
+# My-Personal-Records(MYPR) 
+Practice on jsp, servlet, jdbc.
 
 # why do I need this app?
 The main purpose of building this app is to record my exercise performance. Most importantly, to practice what I've learn lately.
