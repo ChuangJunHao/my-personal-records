@@ -22,7 +22,10 @@ public class PrsnRecordDbUtil {
 	}
 	
 	private String selectAllQuery = "select * from record order by training_date desc";
+	private String selectByIdQuery = "select * from record where id = ?";
 	private String insertQuery = "insert into record(exercise_name, weights, sets, reps, volume, training_date) value(?, ?, ?, ?, ?, ?)";
+	private String updateQuery = "update record set exercise_name = ?, weights = ?, sets = ?, reps = ?, volume = ?, training_date = ? where id = ? ";
+	
 	
 	
 	// retrieve all data
@@ -42,13 +45,14 @@ public class PrsnRecordDbUtil {
 			while(rs.next()) {
 				
 				//retrieve pieces of info and create a new PrsnRec object
+				int id = rs.getInt("id");
 				String exerciseName = rs.getString("exercise_name");
 				int weights = rs.getInt("weights");
 				int sets = rs.getInt("sets");
 				int reps = rs.getInt("reps");
 				Date date = rs.getDate("training_date");
 				
-				PrsnRecord tempPrsnRecord = new PrsnRecord(exerciseName, weights, sets, reps, date);
+				PrsnRecord tempPrsnRecord = new PrsnRecord(id, exerciseName, weights, sets, reps, date);
 				allPrsnRecords.add(tempPrsnRecord);
 			}
 			
@@ -67,8 +71,33 @@ public class PrsnRecordDbUtil {
 	}
 	
 	// retrieve data by id
-	public PrsnRecord getPrsnRecord(int id) {
-		return null;
+	public PrsnRecord getPrsnRecord(int id) throws Exception{
+		PrsnRecord prsnRecord;
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conn = dataSource.getConnection();
+			stmt = conn.prepareStatement(selectByIdQuery);
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				String exerciseName = rs.getString("exercise_name");
+				int weights = rs.getInt("weights");
+				int sets = rs.getInt("sets");
+				int reps = rs.getInt("reps");
+				Date date = rs.getDate("training_date");
+				
+				prsnRecord = new PrsnRecord(id, exerciseName, weights, sets, reps, date);
+				return prsnRecord;	
+			}else {
+				throw new Exception("could not find record id");
+			}
+		} finally {
+			close(conn, stmt, rs);
+		}
 	}
 	
 	// create new data
@@ -108,7 +137,25 @@ public class PrsnRecordDbUtil {
 	}
 	
 	// update existing data
-	public void updatePrsnRecord(int id) {
+	public void updatePrsnRecord(PrsnRecord prsnRecord) throws Exception{
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = dataSource.getConnection();
+			stmt = conn.prepareStatement(updateQuery);
+			
+			stmt.setString(1, prsnRecord.getExerciseName());
+			stmt.setInt(2, prsnRecord.getWeights());
+			stmt.setInt(3, prsnRecord.getSets());
+			stmt.setInt(4, prsnRecord.getReps());
+			stmt.setInt(5, prsnRecord.getVolume());
+			stmt.setString(6,  new SimpleDateFormat("yyyy-MM-dd").format(prsnRecord.getDate()));
+			stmt.setInt(7, prsnRecord.getId());
+			stmt.execute();
+			
+		}finally {
+			close(conn ,stmt, null);
+		}
 		
 	}
 	

@@ -54,6 +54,8 @@ public class PrsnRecordControllerServlet extends HttpServlet {
 			switch(command) {
 				case "ADD": addRecord(request, response); break;
 				case "LIST": listPrsnRecord(request, response); break;
+				case "LOAD": loadPrsnRecord(request, response); break;
+				case "UPDATE": updatePrsnRecord(request, response); break;
 				default: listPrsnRecord(request, response); break;
 			}
 			
@@ -61,6 +63,50 @@ public class PrsnRecordControllerServlet extends HttpServlet {
 		}catch (Exception e) {
 			throw new ServletException(e);
 		}
+		
+	}
+
+
+
+	private void updatePrsnRecord(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		// read data from update form
+		int id = Integer.valueOf(request.getParameter("prsnRecordId"));
+		String exerciseName = request.getParameter("exerciseName");
+		int weights = Integer.valueOf(request.getParameter("weights"));
+		int sets = Integer.valueOf(request.getParameter("sets"));
+		int reps = Integer.valueOf(request.getParameter("reps"));
+		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("date"));
+	
+		// create a new PrsnRecord object
+		PrsnRecord prsnRecord = new PrsnRecord(id, exerciseName, weights, sets, reps, date);
+		
+		// update date through db util
+		prsnRecDbUtil.updatePrsnRecord(prsnRecord);
+		
+		// send it back to list page
+		listPrsnRecord(request, response);
+		
+	}
+
+
+
+	private void loadPrsnRecord(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		// get id from request
+		int id = Integer.valueOf(request.getParameter("prsnRecordId"));
+		
+		
+		// find the record by id
+		PrsnRecord prsnRecord =  prsnRecDbUtil.getPrsnRecord(id);
+		
+		// add it into request attribute
+		request.setAttribute("PRSNRECORD", prsnRecord);
+		
+		// send it back to update form page
+		RequestDispatcher dispatcher = request.getRequestDispatcher("update-record.jsp");
+		dispatcher.forward(request, response);
+		
 		
 	}
 

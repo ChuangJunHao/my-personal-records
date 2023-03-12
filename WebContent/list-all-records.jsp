@@ -18,6 +18,12 @@
 		</tr>
 			
 		<c:forEach var="tempRecord" items="${ALL_RECORDS}">
+			<!-- set link and params for update button -->
+			<c:url var="updateLink" value="PrsnRecordControllerServlet">
+				<c:param name="command" value="LOAD" />
+				<c:param name="prsnRecordId" value="${tempRecord.id}" />
+			</c:url>
+		
 			<tr>
 				<td>${tempRecord.exerciseName}</td>
 				<td>${tempRecord.weights}</td>
@@ -25,6 +31,7 @@
 				<td>${tempRecord.reps}</td>
 				<td>${tempRecord.volume}</td>
 				<td>${tempRecord.date}</td>
+				<td><a href="${updateLink}">Update</a></td>
 			</tr>
 		</c:forEach> 
 

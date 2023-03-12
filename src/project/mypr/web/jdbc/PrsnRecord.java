@@ -3,7 +3,7 @@ package project.mypr.web.jdbc;
 import java.util.Date;
 
 public class PrsnRecord {
-	private long id;
+	private int id;
 	private String exerciseName;
 	private int weights;
 	private int sets;
@@ -11,7 +11,7 @@ public class PrsnRecord {
 	private int volume;
 	private Date date;
 	
-	public PrsnRecord(long id, String exerciseName, int weights, int sets, int reps, Date date) {
+	public PrsnRecord(int id, String exerciseName, int weights, int sets, int reps, Date date) {
 		super();
 		this.id = id;
 		this.exerciseName = exerciseName;
@@ -21,7 +21,7 @@ public class PrsnRecord {
 		this.volume = sets*reps*weights;
 		this.date = date;
 	}
-	
+
 	public PrsnRecord(String exerciseName, int weights, int sets, int reps, Date date) {
 		super();
 		this.exerciseName = exerciseName;
@@ -41,11 +41,11 @@ public class PrsnRecord {
 		this.volume = sets*reps*weights;
 	}
 
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 	
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	
@@ -96,4 +96,11 @@ public class PrsnRecord {
 	public void setWeights(int weights) {
 		this.weights = weights;
 	}
+
+	@Override
+	public String toString() {
+		return "PrsnRecord [id=" + id + ", exerciseName=" + exerciseName + ", weights=" + weights + ", sets=" + sets
+				+ ", reps=" + reps + ", volume=" + volume + ", date=" + date + "]";
+	}
+	
 }
